@@ -1,6 +1,7 @@
 import React from "react";
 import {Button, Form, Input, Modal, Select} from "antd";
 import moment from "moment";
+import {GithubOutlined} from "@ant-design/icons";
 
 const provinceData:any = [
     {
@@ -194,6 +195,9 @@ export class SideBar extends React.Component<SideBarProps, SideBarState> {
                         onClick={() => this.props.changeView(this.props.displayState === 'T' ? 'M' : 'T')}>
                     {this.props.displayState === 'T' ? '地图显示' : '表格显示'}
                 </Button>
+                <div>
+                    <GithubOutlined onClick={()=>window.open('https://github.com/Zhang-JK')} />
+                </div>
                 <Modal title="Add profile" open={this.state.open}
                        footer={null}
                        onCancel={() => this.setState({open: false})}>

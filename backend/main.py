@@ -3,11 +3,25 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from bson.json_util import dumps
 from typing import Optional
+from fastapi.middleware.cors import CORSMiddleware
 
 myclient = pymongo.MongoClient("mongodb://localhost:27017")
 collection = myclient['test']['data']
 
 app = FastAPI()
+
+origins = [
+    "http://localhost",
+    "http://localhost:3001",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 class Item(BaseModel):
     name: str
