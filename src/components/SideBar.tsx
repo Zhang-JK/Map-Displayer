@@ -196,7 +196,7 @@ export class SideBar extends React.Component<SideBarProps, SideBarState> {
                     {this.props.displayState === 'T' ? '地图显示' : '表格显示'}
                 </Button>
                 <div>
-                    <GithubOutlined onClick={()=>window.open('https://github.com/Zhang-JK')} />
+                    <GithubOutlined onClick={()=>window.open('https://github.com/Zhang-JK/Map-Displayer')} />
                 </div>
                 <Modal title="Add profile" open={this.state.open}
                        footer={null}
