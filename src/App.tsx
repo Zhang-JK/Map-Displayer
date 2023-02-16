@@ -3,8 +3,10 @@ import React, {useState, useEffect} from 'react';
 import './App.css';
 import {Map} from "./components/Map";
 import {SideBar} from "./components/SideBar";
+import {DataTable} from "./components/DataTable";
 
 function App() {
+    const [rawData, setRawData] = useState<any>(null);
     const [mapData, setMapData] = useState<any>([]);
     const [valueData, setValueData] = useState<any>([]);
     const [displayState, setDisplayState] = useState<string>('M');
@@ -17,6 +19,7 @@ function App() {
             .then(res => res.json())
             .then(res => {
                 res = JSON.parse(res);
+                setRawData(res);
                 var mapDataDict = [];
                 for(let r of res){
                     if (mapDataDict[r['province']] === undefined) {
@@ -45,7 +48,7 @@ function App() {
             <div className='w-100 h-100 d-flex flex-row'>
                 <SideBar displayState={displayState} changeView={(v)=>{setDisplayState(v)}} reload={() => window.location.reload()} />
                 {displayState==='M' && <Map valueData={valueData} mapData={mapData}/>}
-                {displayState==='T' && <Map valueData={valueData} mapData={mapData}/>}
+                {displayState==='T' && <DataTable data={rawData}/>}
             </div>
         </div>
     );
