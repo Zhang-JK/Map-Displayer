@@ -1,26 +1,47 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useState, useEffect} from 'react';
+
 import './App.css';
+import {Map} from "./components/Map";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [mapData, setMapData] = useState<any>([]);
+    const [valueData, setValueData] = useState<any>([]);
+    useEffect(() => {
+        if(valueData.length !== 0) {
+            return
+        }
+        fetch('http://laojk.club:8000/all', {mode: 'cors', credentials: 'omit', method: 'GET'})
+            .then(res => res.json())
+            .then(res => {
+                res = JSON.parse(res);
+                var mapDataDict = [];
+                for(let r of res){
+                    if (mapDataDict[r['province']] === undefined) {
+                        mapDataDict[r['province']] = [{
+                            name: r['name'], city: r['city'], time: r['time']
+                        }];
+                    }
+                    else {
+                        mapDataDict[r['province']].push({
+                            name: r['name'], city: r['city'], time: r['time']
+                        });
+                    }
+                }
+
+                var valueData = [];
+                for(let key in mapDataDict) {
+                    valueData.push({name: key, value: mapDataDict[key].length})
+                }
+                setMapData(mapDataDict);
+                setValueData(valueData);
+            });
+    });
+
+    return (
+        <div className="App">
+            <Map valueData={valueData} mapData={mapData} />
+        </div>
+    );
 }
 
 export default App;
