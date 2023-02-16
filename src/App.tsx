@@ -2,10 +2,13 @@ import React, {useState, useEffect} from 'react';
 
 import './App.css';
 import {Map} from "./components/Map";
+import {SideBar} from "./components/SideBar";
 
 function App() {
     const [mapData, setMapData] = useState<any>([]);
     const [valueData, setValueData] = useState<any>([]);
+    const [displayState, setDisplayState] = useState<string>('M');
+
     useEffect(() => {
         if(valueData.length !== 0) {
             return
@@ -39,7 +42,11 @@ function App() {
 
     return (
         <div className="App">
-            <Map valueData={valueData} mapData={mapData} />
+            <div className='w-100 h-100 d-flex flex-row'>
+                <SideBar displayState={displayState} changeView={(v)=>{setDisplayState(v)}} reload={() => window.location.reload()} />
+                {displayState==='M' && <Map valueData={valueData} mapData={mapData}/>}
+                {displayState==='T' && <Map valueData={valueData} mapData={mapData}/>}
+            </div>
         </div>
     );
 }
